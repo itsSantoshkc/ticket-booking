@@ -1,5 +1,5 @@
-import { exampleRouter } from "axios  @tanstack/react-query/server/api/routers/example";
 import { createTRPCRouter } from "axios  @tanstack/react-query/server/api/trpc";
+import { bookingRouter } from "./routers/booking";
 
 /**
  * This is the primary router for your server.
@@ -7,7 +7,7 @@ import { createTRPCRouter } from "axios  @tanstack/react-query/server/api/trpc";
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
-  example: exampleRouter,
+  booking: bookingRouter,
 });
 
 // export type definition of API
