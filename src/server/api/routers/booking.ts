@@ -13,7 +13,11 @@ export const bookingRouter = createTRPCRouter({
       };
     }),
   getAll: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.example.findMany();
+    return ctx.prisma.booking.findUnique({
+      where: {
+        bookingReference: "1",
+      },
+    });
   }),
 
   goodbye: publicProcedure
