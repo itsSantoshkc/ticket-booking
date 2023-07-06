@@ -5,6 +5,10 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator erd {
+  provider = "prisma-erd-generator"
+}
+
 datasource db {
   provider = "mysql"
   url = env("DATABASE_URL")
@@ -12,8 +16,36 @@ datasource db {
 }
 
 
-model Example {
-    id        String   @id @default(cuid())
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+model Vechicle{
+  id String @id
+  vechicleType String
+  vechicleDescription  String
+  routeFrom String 
+  routeTo String
+  Departure DateTime 
+  totalSeats Int
+  bookings Booking[]
+  seats Seat[]
+}
+
+model Booking{
+  bookingReferenceNo String @id  @default(cuid())
+  bookerId String
+  vechicle Vechicle @relation(fields: [vechicleId], references: [id])
+  vechicleId String
+  bookedAt DateTime @default(now())
+  seats Seat[]
+  @@index([vechicleId])
+}
+
+
+model Seat{
+  seatId String @id
+  vechicle Vechicle @relation(fields: [vechicleId], references: [id])
+  booking Booking @relation(fields: [bookingId], references: [bookingReferenceNo])
+  bookingId String
+  vechicleId String
+
+  @@index([vechicleId])
+  @@index([bookingId])
 }
