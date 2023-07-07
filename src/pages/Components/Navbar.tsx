@@ -1,9 +1,35 @@
 import Link from "next/link";
 import React from "react";
+import { Avatar, AvatarImage } from "./UI/avatar";
+import { SignInButton, SignOutButton, SignedOut, useUser } from "@clerk/nextjs";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "./UI/dropdown-menu";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "./UI/alert-dialog";
+import { Skeleton } from "./UI/skeleton";
+import { useClerk } from "@clerk/clerk-react";
+import { Button } from "./UI/button";
 
 type Props = {};
 
 const Navbar = (props: Props) => {
+  const { isLoaded, isSignedIn, user } = useUser();
+  const { signOut } = useClerk();
   return (
     <>
       <nav className="border-b border-gray-500 bg-zinc-950">
@@ -19,70 +45,63 @@ const Navbar = (props: Props) => {
             </span>
           </Link>
           <div className="flex items-center md:order-2">
-            <button
-              data-collapse-toggle="navbar-user"
-              type="button"
-              className="inline-flex h-10 w-10 items-center justify-center rounded-lg p-2 text-sm text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600 md:hidden"
-              aria-controls="navbar-user"
-              aria-expanded="false"
-            >
-              <span className="sr-only">Open main menu</span>
-              <svg
-                className="h-5 w-5"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 17 14"
-              >
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M1 1h15M1 7h15M1 13h15"
-                />
-              </svg>
-            </button>
-          </div>
-          <div
-            className="hidden w-full items-center justify-between md:order-1 md:flex md:w-auto"
-            id="navbar-user"
-          >
-            <ul className="mt-4 flex flex-col rounded-lg border border-gray-100  bg-zinc-950 p-4 font-medium  md:mt-0 md:flex-row md:space-x-8 md:border-0  md:p-0 ">
-              <li>
-                <a
-                  href="#"
-                  className="block rounded bg-blue-700 py-2 pl-3 pr-4 text-white md:bg-transparent md:p-0 md:text-blue-700 md:dark:text-blue-500"
-                  aria-current="page"
-                >
-                  Booking
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="block rounded py-2 pl-3 pr-4 text-white hover:bg-gray-100 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:p-0 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:bg-transparent md:dark:hover:text-blue-500"
-                >
-                  Routes
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="block rounded py-2 pl-3 pr-4 text-white hover:bg-gray-100 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:p-0 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:bg-transparent md:dark:hover:text-blue-500"
-                >
-                  Services
-                </a>
-              </li>
-              <li>
-                <Link
-                  href="/about"
-                  className="block rounded py-2 pl-3 pr-4 text-white  dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:p-0 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:bg-transparent md:dark:hover:text-blue-500"
-                >
-                  About
-                </Link>
-              </li>
-            </ul>
+            {isSignedIn ? (
+              <AlertDialog>
+                <DropdownMenu>
+                  <Avatar className="cursor-pointer hover:opacity-50">
+                    {isLoaded ? (
+                      <DropdownMenuTrigger>
+                        <AvatarImage src={user.imageUrl} />
+                      </DropdownMenuTrigger>
+                    ) : (
+                      <Skeleton className="h-12 w-12 rounded-full bg-zinc-700" />
+                    )}
+                  </Avatar>
+
+                  <DropdownMenuContent className="cursor-pointer border-none bg-zinc-950 text-slate-300">
+                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem className="cursor-pointer">
+                      My Booking
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="cursor-pointer">
+                      Team
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="cursor-pointer">
+                      <AlertDialogTrigger>Sign Out</AlertDialogTrigger>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+                <AlertDialogContent className="bg-zinc-950">
+                  <AlertDialogHeader>
+                    <AlertDialogTitle className="text-slate-400">
+                      Are you absolutely sure you want to sign out?
+                    </AlertDialogTitle>
+                    <AlertDialogDescription className="text-slate-400">
+                      This action cannot be undone. This will remove your access
+                      from using many features this website offers.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel className="border-none bg-slate-900 text-white hover:opacity-50">
+                      Cancel
+                    </AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={() => signOut()}
+                      className="bg-white text-zinc-950 hover:bg-white hover:opacity-50"
+                    >
+                      Sign Out
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            ) : (
+              <SignInButton>
+                <Button className="bg-white text-zinc-950 hover:bg-white hover:opacity-50">
+                  Sign In
+                </Button>
+              </SignInButton>
+            )}
           </div>
         </div>
       </nav>

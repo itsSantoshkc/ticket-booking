@@ -1,5 +1,5 @@
-import Navbar from "./Navbar";
 import { useRouter } from "next/router";
+import Navbar from "./Navbar";
 
 export default function Layout({ children }: any) {
   const router = useRouter();
