@@ -16,8 +16,14 @@ datasource db {
 }
 
 
+model User{
+  userId String @id @unique
+  admin Boolean
+}
+
+
 model Vechicle{
-  id String @id
+  id Int @id @default(autoincrement())
   vechicleType String
   vechicleDescription  String
   routeFrom String 
@@ -32,7 +38,7 @@ model Booking{
   bookingReferenceNo String @id  @default(cuid())
   bookerId String
   vechicle Vechicle @relation(fields: [vechicleId], references: [id])
-  vechicleId String
+  vechicleId Int
   bookedAt DateTime @default(now())
   seats Seat[]
   @@index([vechicleId])
@@ -44,7 +50,7 @@ model Seat{
   vechicle Vechicle @relation(fields: [vechicleId], references: [id])
   booking Booking @relation(fields: [bookingId], references: [bookingReferenceNo])
   bookingId String
-  vechicleId String
+  vechicleId Int
 
   @@index([vechicleId])
   @@index([bookingId])

@@ -24,10 +24,12 @@ import {
 import { Skeleton } from "./UI/skeleton";
 import { useClerk } from "@clerk/clerk-react";
 import { Button } from "./UI/button";
+import { useRouter } from "next/router";
 
 type Props = {};
 
 const Navbar = (props: Props) => {
+  const router = useRouter();
   const { isLoaded, isSignedIn, user } = useUser();
   const { signOut } = useClerk();
   return (
@@ -59,10 +61,8 @@ const Navbar = (props: Props) => {
                   </Avatar>
 
                   <DropdownMenuContent className="cursor-pointer border-none bg-zinc-950 text-slate-300">
-                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                    <DropdownMenuSeparator />
                     <DropdownMenuItem className="cursor-pointer">
-                      My Booking
+                      <Link href={"/profile/mybooking"}>My Booking</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem className="cursor-pointer">
                       Team
@@ -73,7 +73,7 @@ const Navbar = (props: Props) => {
                   </DropdownMenuContent>
                 </DropdownMenu>
                 <AlertDialogContent className="bg-zinc-950">
-                  <AlertDialogHeader>
+                  <AlertDialogHeader className="bg-zinc-950">
                     <AlertDialogTitle className="text-slate-400">
                       Are you absolutely sure you want to sign out?
                     </AlertDialogTitle>
@@ -87,7 +87,10 @@ const Navbar = (props: Props) => {
                       Cancel
                     </AlertDialogCancel>
                     <AlertDialogAction
-                      onClick={() => signOut()}
+                      onClick={() => {
+                        signOut();
+                        router.push("/");
+                      }}
                       className="bg-white text-zinc-950 hover:bg-white hover:opacity-50"
                     >
                       Sign Out

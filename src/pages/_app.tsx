@@ -10,11 +10,10 @@ const MyApp: AppType = ({ Component, pageProps }) => {
     <>
       <ClerkProvider {...pageProps}>
         <Layout>
-                <Head>
-        <title>Booker</title>
-        <link rel="icon" href="/booker-logo.svg" type="image/svg"/>
-        
-      </Head>
+          <Head>
+            <title>Booker</title>
+            <link rel="icon" href="/booker-logo.svg" type="image/svg" />
+          </Head>
           <Component {...pageProps} />
         </Layout>
       </ClerkProvider>
