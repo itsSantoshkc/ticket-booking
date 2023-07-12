@@ -4,9 +4,9 @@ import {
   CardContent,
   CardDescription,
   CardTitle,
-} from "../Components/UI/card";
-import { Button } from "../Components/UI/button";
-import { Badge } from "../Components/UI/badge";
+} from "../../Components/UI/card";
+import { Button } from "../../Components/UI/button";
+import { Badge } from "../../Components/UI/badge";
 
 type Props = {};
 

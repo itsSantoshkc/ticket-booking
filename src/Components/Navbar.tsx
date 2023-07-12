@@ -1,13 +1,11 @@
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Avatar, AvatarImage } from "./UI/avatar";
-import { SignInButton, SignOutButton, SignedOut, useUser } from "@clerk/nextjs";
+import { SignInButton, useUser } from "@clerk/nextjs";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./UI/dropdown-menu";
 import {
@@ -26,12 +24,17 @@ import { useClerk } from "@clerk/clerk-react";
 import { Button } from "./UI/button";
 import { useRouter } from "next/router";
 
-type Props = {};
+type Props = {
+  isAdmin: boolean | undefined;
+  user: any;
+  isLoaded: boolean;
+  isSignedIn: boolean | undefined;
+};
 
-const Navbar = (props: Props) => {
-  const router = useRouter();
-  const { isLoaded, isSignedIn, user } = useUser();
+const Navbar = ({ isAdmin, user, isLoaded, isSignedIn }: Props) => {
   const { signOut } = useClerk();
+  const router = useRouter();
+
   return (
     <>
       <nav className="border-b border-gray-500 bg-zinc-950">
@@ -64,9 +67,11 @@ const Navbar = (props: Props) => {
                     <DropdownMenuItem className="cursor-pointer">
                       <Link href={"/profile/mybooking"}>My Booking</Link>
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="cursor-pointer">
-                      Team
-                    </DropdownMenuItem>
+                    {isAdmin && (
+                      <DropdownMenuItem className="cursor-pointer">
+                        <Link href={"/profile/admin"}>Admin</Link>
+                      </DropdownMenuItem>
+                    )}
                     <DropdownMenuItem className="cursor-pointer">
                       <AlertDialogTrigger>Sign Out</AlertDialogTrigger>
                     </DropdownMenuItem>

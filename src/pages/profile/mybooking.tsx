@@ -1,14 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
-} from "../Components/UI/table";
+} from "../../Components/UI/table";
 import Link from "next/link";
+import { api } from "axios  @tanstack/react-query/utils/api";
 
 type Props = {};
 

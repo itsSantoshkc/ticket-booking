@@ -5,9 +5,7 @@ generator client {
   provider = "prisma-client-js"
 }
 
-generator erd {
-  provider = "prisma-erd-generator"
-}
+
 
 datasource db {
   provider = "mysql"
@@ -24,11 +22,12 @@ model User{
 
 model Vechicle{
   id Int @id @default(autoincrement())
+  vechicleRegNo  Int
   vechicleType String
   vechicleDescription  String
   routeFrom String 
   routeTo String
-  Departure DateTime 
+  departure DateTime 
   totalSeats Int
   bookings Booking[]
   seats Seat[]

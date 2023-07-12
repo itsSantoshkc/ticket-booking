@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { Button } from "../Components/UI/button";
+import { Button } from "../../Components/UI/button";
 
 export default function Page() {
   const router = useRouter();
