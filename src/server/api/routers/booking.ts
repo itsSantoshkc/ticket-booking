@@ -12,13 +12,13 @@ export const bookingRouter = createTRPCRouter({
         greeting: `Hello ${input.text}`,
       };
     }),
-  getAll: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.booking.findUnique({
-      where: {
-        bookingReference: "1",
-      },
-    });
-  }),
+  // getAll: publicProcedure.query(({ ctx }) => {
+  //   return ctx.prisma.booking.findUnique({
+  //     where: {
+  //       bookingReference: "1",
+  //     },
+  //   });
+  // }),
 
   goodbye: publicProcedure
     .input(z.object({ message: z.string() }))

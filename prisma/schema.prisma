@@ -5,9 +5,7 @@ generator client {
   provider = "prisma-client-js"
 }
 
-generator erd {
-  provider = "prisma-erd-generator"
-}
+
 
 datasource db {
   provider = "mysql"
@@ -16,13 +14,20 @@ datasource db {
 }
 
 
+model User{
+  userId String @id @unique
+  admin Boolean
+}
+
+
 model Vechicle{
-  id String @id
+  id Int @id @default(autoincrement())
+  vechicleRegNo  Int
   vechicleType String
   vechicleDescription  String
   routeFrom String 
   routeTo String
-  Departure DateTime 
+  departure DateTime 
   totalSeats Int
   bookings Booking[]
   seats Seat[]
@@ -32,7 +37,7 @@ model Booking{
   bookingReferenceNo String @id  @default(cuid())
   bookerId String
   vechicle Vechicle @relation(fields: [vechicleId], references: [id])
-  vechicleId String
+  vechicleId Int
   bookedAt DateTime @default(now())
   seats Seat[]
   @@index([vechicleId])
@@ -44,7 +49,7 @@ model Seat{
   vechicle Vechicle @relation(fields: [vechicleId], references: [id])
   booking Booking @relation(fields: [bookingId], references: [bookingReferenceNo])
   bookingId String
-  vechicleId String
+  vechicleId Int
 
   @@index([vechicleId])
   @@index([bookingId])

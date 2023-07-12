@@ -1,11 +1,6 @@
-import Head from "next/head";
-
 function Error({ statusCode }) {
   return (
     <>
-      <Head>
-        <title>Error {statusCode}</title>
-      </Head>
       <div
         className="flex h-screen items-center justify-center bg-zinc-950"
         style={{ minHeight: "100vh" }}
