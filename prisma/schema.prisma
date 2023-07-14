@@ -21,7 +21,7 @@ model User{
 
 
 model Vechicle{
-  id Int @id @default(autoincrement())
+  id String @id @default(cuid())
   vechicleRegNo  Int
   vechicleType String
   vechicleDescription  String
@@ -29,6 +29,7 @@ model Vechicle{
   routeTo String
   departure DateTime 
   totalSeats Int
+  price Int
   bookings Booking[]
   seats Seat[]
 }
@@ -37,7 +38,7 @@ model Booking{
   bookingReferenceNo String @id  @default(cuid())
   bookerId String
   vechicle Vechicle @relation(fields: [vechicleId], references: [id])
-  vechicleId Int
+  vechicleId String
   bookedAt DateTime @default(now())
   seats Seat[]
   @@index([vechicleId])
@@ -49,8 +50,9 @@ model Seat{
   vechicle Vechicle @relation(fields: [vechicleId], references: [id])
   booking Booking @relation(fields: [bookingId], references: [bookingReferenceNo])
   bookingId String
-  vechicleId Int
+  vechicleId String
 
   @@index([vechicleId])
   @@index([bookingId])
 }
+

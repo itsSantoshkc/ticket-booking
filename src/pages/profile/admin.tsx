@@ -63,6 +63,18 @@ const admin = () => {
     };
     //@ts-expect-error
     mutate(submittedData);
+
+    setDate(undefined);
+    setHour("");
+    setMinute("");
+    setFormat("");
+    setName("");
+    setRegNo(0);
+    setTotalSeats(0);
+    setDescription("");
+    setRouteFrom("");
+    setRouteTo("");
+    setPrice(0);
   };
 
   return (

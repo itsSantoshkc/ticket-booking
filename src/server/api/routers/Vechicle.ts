@@ -4,8 +4,10 @@ import {
   publicProcedure,
   adminProcedure,
 } from "axios  @tanstack/react-query/server/api/trpc";
-import { TRPCError } from "@trpc/server";
-import { addNewVechicle } from "./QueryFunctions/VechicleQuery";
+import {
+  addNewVechicle,
+  getVechicleById,
+} from "./QueryFunctions/VechicleQuery";
 
 export const vechicleRouter = createTRPCRouter({
   addVechicle: adminProcedure
@@ -24,6 +26,11 @@ export const vechicleRouter = createTRPCRouter({
     .mutation(({ ctx, input }) => {
       addNewVechicle({ ctx, input });
     }),
+  getVechicleById: publicProcedure
+    .input(z.object({ id: z.string() }))
+    .query(({ ctx, input }) => {
+      return getVechicleById({ ctx, input });
+    }),
   //   getAll: publicProcedure.query(({ ctx }) => {
   //     return ctx.prisma.booking.findUnique({
   //       where: {
@@ -34,6 +41,6 @@ export const vechicleRouter = createTRPCRouter({
 
   getAllVechicle: publicProcedure.query(({ ctx }) => {
     const vechiclesDetails = ctx.prisma.vechicle.findMany();
-    console.log(vechiclesDetails);
+    return vechiclesDetails;
   }),
 });

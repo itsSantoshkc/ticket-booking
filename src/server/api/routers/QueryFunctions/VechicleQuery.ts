@@ -1,10 +1,7 @@
 import type { Prisma, PrismaClient } from "@prisma/client";
 import { DefaultArgs } from "@prisma/client/runtime";
 import { TRPCError } from "@trpc/server";
-type addNewVechicleArgument = {
-  ctx: ctx;
-  input: Vechicle;
-};
+type addNewVechicleArgument = { ctx: ctx; input: Vechicle };
 type ctx = {
   userId: string | null;
   prisma: PrismaClient<
@@ -24,7 +21,6 @@ type Vechicle = {
   departure: Date;
   totalSeats: number;
 };
-
 export const addNewVechicle = async ({
   ctx,
   input,
@@ -37,46 +33,49 @@ export const addNewVechicle = async ({
       departure: input.departure,
       routeFrom: input.routeFrom,
       routeTo: input.routeTo,
+      price: input.price,
       totalSeats: input.totalSeats,
     },
   });
   return addVechicle;
 };
-
 export const getVechicleById = async ({
   ctx,
   input,
 }: {
   ctx: ctx;
-  input: { id: number };
+  input: { id: string };
 }) => {
   const vechicleDetail = await ctx.prisma.vechicle.findUnique({
-    where: {
-      id: input.id,
-    },
+    where: { id: input.id },
   });
-
-  if (vechicleDetail === null) {
-    throw new TRPCError({ code: "NOT_FOUND" });
-  }
 
   return vechicleDetail;
 };
-
-export const getVechicle = async ({
+export const getVechicles = async ({
   ctx,
   input,
 }: {
   ctx: ctx;
-  input: {
-    start: number;
-    count: number;
-  };
+  input: { count: number };
 }) => {
   const vechicleDetails = await ctx.prisma.vechicle.findMany({
-    skip: input.start,
+    skip: input.count - 20,
     take: input.count,
   });
-
   return vechicleDetails;
+};
+export const getVechicleByType = async ({
+  ctx,
+  input,
+}: {
+  ctx: ctx;
+  input: { type: string };
+}) => {
+  const vechicleByType = await ctx.prisma.vechicle.findMany({
+    where: {
+      vechicleType: input.type,
+    },
+  });
+  return vechicleByType;
 };
