@@ -15,6 +15,7 @@ type Vechicle = {
   price: number;
   departure: Date;
   totalSeats: number;
+  image: string;
 };
 
 const Booking = (props: Props) => {
@@ -48,6 +49,7 @@ const Booking = (props: Props) => {
                   vechicleType={vechicle.vechicleType}
                   routeFrom={vechicle.routeFrom}
                   routeTo={vechicle.routeTo}
+                  image={vechicle.image}
                   vechicleDescription={vechicle.vechicleDescription}
                 />
               ))}

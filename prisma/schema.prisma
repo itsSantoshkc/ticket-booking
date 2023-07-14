@@ -22,6 +22,7 @@ model User{
 
 model Vechicle{
   id String @id @default(cuid())
+  image String 
   vechicleRegNo  Int
   vechicleType String
   vechicleDescription  String

@@ -35,16 +35,15 @@ const admin = () => {
   const [minute, setMinute] = useState<string>("");
   const [format, setFormat] = useState<string>("");
   const [name, setName] = useState<string>("");
-  const [regNo, setRegNo] = useState<number>(0);
-  const [totalSeats, setTotalSeats] = useState<number>(0);
+  const [regNo, setRegNo] = useState<string>("");
+  const [totalSeats, setTotalSeats] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [routeFrom, setRouteFrom] = useState<string>("");
   const [routeTo, setRouteTo] = useState<string>("");
-  const [price, setPrice] = useState<number>(0);
+  const [price, setPrice] = useState<string>("");
 
   const { mutate } = api.Vechicle.addVechicle.useMutation();
   const handleSubmit = (e: any) => {
-    e.preventDefault();
     if (hour && minute && format) {
       date?.setMinutes(Number(minute));
       format === "PM"
@@ -53,28 +52,28 @@ const admin = () => {
     }
     const submittedData = {
       vechicleType: name,
-      vechicleRegNo: regNo,
+      vechicleRegNo: parseInt(regNo),
       vechicleDescription: description,
       routeFrom: routeFrom,
       routeTo: routeTo,
-      price: price,
+      price: parseFloat(price),
       departure: date,
-      totalSeats: totalSeats,
+      totalSeats: parseInt(totalSeats),
     };
     //@ts-expect-error
     mutate(submittedData);
 
-    setDate(undefined);
+    setDate(new Date());
     setHour("");
     setMinute("");
     setFormat("");
     setName("");
-    setRegNo(0);
-    setTotalSeats(0);
+    setRegNo("");
+    setTotalSeats("");
     setDescription("");
     setRouteFrom("");
     setRouteTo("");
-    setPrice(0);
+    setPrice("");
   };
 
   return (
@@ -93,6 +92,7 @@ const admin = () => {
                   <Label className="my-4">Vechicle Type : </Label>
                   <Input
                     type="text"
+                    value={name}
                     onChange={(e) => setName(e.target.value)}
                     className="h-62 w-full rounded-xl border-b border-l-0 border-r-0 border-t-0  bg-zinc-950"
                     placeholder="Name"
@@ -100,7 +100,8 @@ const admin = () => {
                   <Label className="my-4">Vechicle Reg No : </Label>
                   <Input
                     type="text"
-                    onChange={(e) => setRegNo(parseInt(e.target.value))}
+                    value={regNo}
+                    onChange={(e) => setRegNo(e.target.value)}
                     pattern="[0-9]+"
                     className="h-62 w-full rounded-xl border-b border-l-0 border-r-0 border-t-0  bg-zinc-950"
                     placeholder="Vechicle Registration Number"
@@ -110,6 +111,7 @@ const admin = () => {
                   <Input
                     onChange={(e) => setDescription(e.target.value)}
                     type="text"
+                    value={description}
                     className="h-62 w-full rounded-xl border-l-0 border-r-0 border-t-0 bg-zinc-950 "
                     placeholder="Description"
                   />
@@ -117,6 +119,7 @@ const admin = () => {
                   <Input
                     onChange={(e) => setRouteFrom(e.target.value)}
                     type="text"
+                    value={routeFrom}
                     className="h-62 w-full rounded-xl border-l-0 border-r-0 border-t-0 bg-zinc-950 "
                     placeholder="Route From"
                   />
@@ -124,13 +127,15 @@ const admin = () => {
                   <Input
                     onChange={(e) => setRouteTo(e.target.value)}
                     type="text"
+                    value={routeTo}
                     className="h-62 w-full rounded-xl border-l-0  border-r-0 border-t-0 bg-zinc-950"
                     placeholder="Route To"
                   />
                   <Label className="my-4">Price : </Label>
                   <Input
-                    onChange={(e) => setPrice(parseFloat(e.target.value))}
+                    onChange={(e) => setPrice(e.target.value)}
                     type="text"
+                    value={price}
                     className="h-62 w-full rounded-xl border-l-0  border-r-0 border-t-0 bg-zinc-950"
                     placeholder="Price"
                   />
@@ -213,7 +218,8 @@ const admin = () => {
                   <Label className="my-4">Vechicle Seat Capacity : </Label>
                   <Input
                     type="text"
-                    onChange={(e) => setTotalSeats(parseInt(e.target.value))}
+                    value={totalSeats}
+                    onChange={(e) => setTotalSeats(e.target.value)}
                     pattern="[0-9]+"
                     className="h-62 w-full rounded-xl border-b border-l-0 border-r-0 border-t-0  bg-zinc-950"
                     placeholder="Vechicle Total Seats"

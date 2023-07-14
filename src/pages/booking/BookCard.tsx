@@ -14,6 +14,7 @@ type Props = {
   vechicleType: string;
   vechicleDescription: string;
   routeFrom: string;
+  image: string;
   routeTo: string;
 };
 
@@ -24,7 +25,7 @@ const BookCard = (props: Props) => {
         <CardContent className="min-w-full p-2 ">
           <img
             className="h-64 w-full  rounded-2xl lg:h-72 xl:h-80   2xl:h-80"
-            src="https://i.pinimg.com/564x/79/6a/05/796a05c8a35fb1cf9a4bdc98653c353f.jpg"
+            src={props.image}
             alt="image"
           />
           <div className=" mx-2 my-5">

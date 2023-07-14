@@ -1,6 +1,10 @@
+import { vechicleRouter } from "./../Vechicle";
 import type { Prisma, PrismaClient } from "@prisma/client";
 import { DefaultArgs } from "@prisma/client/runtime";
 import { TRPCError } from "@trpc/server";
+import * as fs from "fs";
+import { Vegan } from "lucide-react";
+
 type addNewVechicleArgument = { ctx: ctx; input: Vechicle };
 type ctx = {
   userId: string | null;
@@ -25,19 +29,29 @@ export const addNewVechicle = async ({
   ctx,
   input,
 }: addNewVechicleArgument) => {
-  const addVechicle = await ctx.prisma.vechicle.create({
-    data: {
-      vechicleType: input.vechicleType,
-      vechicleDescription: input.vechicleDescription,
-      vechicleRegNo: input.vechicleRegNo,
-      departure: input.departure,
-      routeFrom: input.routeFrom,
-      routeTo: input.routeTo,
-      price: input.price,
-      totalSeats: input.totalSeats,
-    },
+  fs.readFile("public/images.json", async (err, data) => {
+    if (err) {
+      console.log(err);
+    }
+    const parsedData = await JSON.parse(data.toString());
+    const vechicleType = await input.vechicleType.toUpperCase();
+    const image = input.vechicleRegNo % 3;
+
+    const addVechicle = await ctx.prisma.vechicle.create({
+      data: {
+        image: parsedData[vechicleType][image],
+        vechicleType: input.vechicleType,
+        vechicleDescription: input.vechicleDescription,
+        vechicleRegNo: input.vechicleRegNo,
+        departure: input.departure,
+        routeFrom: input.routeFrom,
+        routeTo: input.routeTo,
+        price: input.price,
+        totalSeats: input.totalSeats,
+      },
+    });
+    return addVechicle;
   });
-  return addVechicle;
 };
 export const getVechicleById = async ({
   ctx,
